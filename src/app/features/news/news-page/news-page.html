@@ -1,0 +1,58 @@
+<section class="page">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">HN</div>
+      <div>
+        <h1 class="title">Tech News</h1>
+        <p class="subtitle">Latest stories from Hacker News</p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="pill">
+        <span class="pillLabel">Loaded</span>
+        <span class="pillValue">{{ news.length }}</span>
+      </div>
+      <div class="pill" *ngIf="allIds.length">
+        <span class="pillLabel">Total</span>
+        <span class="pillValue">{{ allIds.length }}</span>
+      </div>
+    </div>
+  </header>
+
+  <div *ngIf="error" class="alert alertError">
+    {{ error }}
+  </div>
+
+  <div *ngIf="loading && !news.length" class="skeletonWrap">
+    <div class="skeleton" *ngFor="let _ of [1,2,3,4,5,6,7,8,9,10]">
+      <div class="skTitle"></div>
+      <div class="skMeta"></div>
+    </div>
+  </div>
+
+  <ul class="list" *ngIf="news.length">
+    <li class="card" *ngFor="let n of news">
+      <a class="cardTitle" [href]="n.url" target="_blank" rel="noopener noreferrer">
+        {{ n.title }}
+      </a>
+      <div class="cardMeta">
+        <span class="dot"></span>
+        <span>{{ n.date | date: 'MMM d, y' }}</span>
+        <span class="sep">•</span>
+        <span>{{ n.date | date: 'HH:mm' }}</span>
+      </div>
+    </li>
+  </ul>
+
+  <footer class="footer">
+    <button class="btn" (click)="loadMore()" [disabled]="loading || !canLoadMore">
+      <span *ngIf="!loading">Load more</span>
+      <span *ngIf="loading">Loading…</span>
+    </button>
+
+    <p class="hint" *ngIf="!canLoadMore && news.length">
+      You reached the end of the list.
+    </p>
+  </footer>
+</section>
